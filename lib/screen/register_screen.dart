@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:next_destination/screen/login_screen.dart';
 import 'package:next_destination/utils/colors.dart';
 
+// Import your reusable widgets
+import 'package:next_destination/widgets/custom_text_field.dart';
+import 'package:next_destination/widgets/custom_password_field.dart';
+import 'package:next_destination/widgets/social_button.dart';
+
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
 
@@ -38,7 +43,11 @@ class RegisterScreen extends StatelessWidget {
               style: TextStyle(fontSize: 14, color: secondaryText),
             ),
             const SizedBox(height: 8.0),
-            _buildTextField(hint: 'Enter Your Name'),
+            // Reusing CustomTextField
+            const CustomTextField(
+              hint: 'Enter Your Name',
+              keyboardType: TextInputType.text,
+            ),
 
             const SizedBox(height: 20.0),
 
@@ -47,7 +56,8 @@ class RegisterScreen extends StatelessWidget {
               style: TextStyle(fontSize: 14, color: secondaryText),
             ),
             const SizedBox(height: 8.0),
-            _buildTextField(hint: '9*********9'),
+            // Reusing CustomTextField
+            const CustomTextField(hint: '9*********9'),
 
             const SizedBox(height: 20.0),
 
@@ -56,7 +66,8 @@ class RegisterScreen extends StatelessWidget {
               style: TextStyle(fontSize: 14, color: secondaryText),
             ),
             const SizedBox(height: 8.0),
-            _buildPasswordField(hint: '••••••••••'),
+            // Reusing CustomPasswordField
+            const CustomPasswordField(hint: '••••••••••'),
 
             const SizedBox(height: 10.0),
 
@@ -113,17 +124,12 @@ class RegisterScreen extends StatelessWidget {
 
             const SizedBox(height: 30.0),
 
-            _buildSocialButton(text: 'Continue with Google', onPressed: () {}),
+            // Reusing SocialButton
+            SocialButton(text: 'Continue with Google', onPressed: () {}),
             const SizedBox(height: 15.0),
-            _buildSocialButton(
-              text: 'Continue with Facebook',
-              onPressed: () {},
-            ),
+            SocialButton(text: 'Continue with Facebook', onPressed: () {}),
             const SizedBox(height: 15.0),
-            _buildSocialButton(
-              text: 'Continue with Apple ID',
-              onPressed: () {},
-            ),
+            SocialButton(text: 'Continue with Apple ID', onPressed: () {}),
 
             const SizedBox(height: 30.0),
 
@@ -156,80 +162,6 @@ class RegisterScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildTextField({required String hint}) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15.0),
-        border: Border.all(color: Colors.grey.shade300, width: 2),
-      ),
-      child: TextField(
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-          hintText: hint,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 15,
-          ),
-          border: InputBorder.none,
-          isDense: true,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPasswordField({required String hint}) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15.0),
-        border: Border.all(color: Colors.grey.shade300, width: 2),
-      ),
-      child: const TextField(
-        obscureText: true,
-        decoration: InputDecoration(
-          hintText: '••••••••••',
-          suffixIcon: Icon(Icons.remove_red_eye, color: Colors.grey),
-          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          border: InputBorder.none,
-          isDense: true,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSocialButton({
-    required String text,
-    required VoidCallback onPressed,
-  }) {
-    IconData socialIcon = Icons.error;
-    if (text.contains('Google')) socialIcon = Icons.search;
-    if (text.contains('Facebook')) socialIcon = Icons.facebook;
-    if (text.contains('Apple')) socialIcon = Icons.apple;
-
-    return OutlinedButton(
-      onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.grey.shade200,
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-          side: BorderSide.none,
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(socialIcon, color: Colors.black, size: 24),
-          const SizedBox(width: 10),
-          Text(
-            text,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-          ),
-        ],
       ),
     );
   }

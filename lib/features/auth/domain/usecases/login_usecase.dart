@@ -1,0 +1,34 @@
+import 'package:dartz/dartz.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:next_destination/core/error/failures.dart';
+import 'package:next_destination/core/usecases/app_usecase.dart';
+import 'package:next_destination/features/auth/data/repositories/user_repository.dart';
+import 'package:next_destination/features/auth/domain/entities/user_entity.dart';
+import 'package:next_destination/features/auth/domain/repositories/user_repositroy.dart';
+
+class LoginUsecaseParams extends Equatable {
+  final String phoneNumber;
+  final String password;
+  const LoginUsecaseParams({required this.phoneNumber, required this.password});
+
+  @override
+  List<Object?> get props => [phoneNumber, password];
+}
+
+// Provder For Login Usecase
+final loginUsecaseProvider = Provider<LoginUsecase>((ref) {
+  return LoginUsecase(userRepository: ref.read(userRepositoryProvider));
+});
+
+class LoginUsecase
+    implements UsecaseWithParams<UserEntity, LoginUsecaseParams> {
+  final IUserRepository _userRepositroy;
+  LoginUsecase({required IUserRepository userRepository})
+    : _userRepositroy = userRepository;
+
+  @override
+  Future<Either<Failure, UserEntity>> call(LoginUsecaseParams params) {
+    return _userRepositroy.loginUser(params.phoneNumber, params.password);
+  }
+}

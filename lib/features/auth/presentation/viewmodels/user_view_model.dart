@@ -22,9 +22,9 @@ class UserViewModel extends Notifier<UserState> {
   // register method
   Future<void> register({
     required String fullName,
-    String? email,
+    required String email,
     required String password,
-    String? address,
+    required String confirmPassword,
     required String phoneNumber,
   }) async {
     state = state.copyWith(status: UserStatus.loading);
@@ -32,6 +32,7 @@ class UserViewModel extends Notifier<UserState> {
       fullName: fullName,
       email: email,
       password: password,
+      confirmPassword: confirmPassword,
       phoneNumber: phoneNumber,
     );
     final result = await _registerUsecase.call(registerParams);

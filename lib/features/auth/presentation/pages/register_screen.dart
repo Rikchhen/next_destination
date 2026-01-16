@@ -32,6 +32,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           fullName: _fullNameController.text,
           email: _emailController.text,
           password: _passwordController.text,
+          confirmPassword: _confirmPasswordController.text,
           phoneNumber: _phoneNumberController.text,
         );
   }

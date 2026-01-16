@@ -9,13 +9,15 @@ import 'package:next_destination/features/auth/domain/repositories/user_repositr
 
 class RegisterUsecaseParams extends Equatable {
   final String fullName;
-  final String? email;
+  final String email;
   final String password;
   final String phoneNumber;
+  final String confirmPassword;
   const RegisterUsecaseParams({
     required this.fullName,
-    this.email,
+    required this.email,
     required this.password,
+    required this.confirmPassword,
     required this.phoneNumber,
   });
 
@@ -30,9 +32,9 @@ final registerUsecaseProvider = Provider<RegisterUsecase>((ref) {
 
 class RegisterUsecase
     implements UsecaseWithParams<bool, RegisterUsecaseParams> {
-  final IUserRepository _userRepositroy;
+  final IUserRepository _userRepository;
   RegisterUsecase({required IUserRepository userRepository})
-    : _userRepositroy = userRepository;
+    : _userRepository = userRepository;
 
   @override
   Future<Either<Failure, bool>> call(RegisterUsecaseParams params) {
@@ -40,8 +42,9 @@ class RegisterUsecase
       fullName: params.fullName,
       email: params.email,
       password: params.password,
+      confirmPassword: params.confirmPassword,
       phoneNumber: params.phoneNumber,
     );
-    return _userRepositroy.registerUser(userEntity);
+    return _userRepository.registerUser(userEntity);
   }
 }

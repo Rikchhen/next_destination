@@ -47,6 +47,9 @@ dependencies:
   pretty_dio_logger: ^1.4.0
   connectivity_plus: ^7.0.0
   shared_preferences: ^2.5.4
+  freezed_annotation: ^3.1.0
+  image_picker: ^1.2.1
+  permission_handler: ^12.0.1
 
 dev_dependencies:
   flutter_test:

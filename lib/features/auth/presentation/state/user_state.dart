@@ -7,7 +7,9 @@ enum UserStatus {
   authenticated,
   unauthenticated,
   registered,
+  edited,
   error,
+  success,
 }
 
 class UserState extends Equatable {

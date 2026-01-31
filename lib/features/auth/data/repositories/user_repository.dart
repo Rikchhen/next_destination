@@ -1,15 +1,18 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:next_destination/core/error/failures.dart';
 import 'package:next_destination/core/services/connectivity/network_info.dart';
 import 'package:next_destination/features/auth/data/datasources/local/user_local_datasource.dart';
 import 'package:next_destination/features/auth/data/datasources/remote/user_remote_datasource.dart';
 import 'package:next_destination/features/auth/data/datasources/user_datasource.dart';
+import 'package:next_destination/features/auth/data/models/edit_profile_api_model.dart';
 import 'package:next_destination/features/auth/data/models/user_api_model.dart';
 import 'package:next_destination/features/auth/data/models/user_hive_model.dart';
 import 'package:next_destination/features/auth/domain/entities/user_entity.dart';
 import 'package:next_destination/features/auth/domain/repositories/user_repositroy.dart';
+import 'package:next_destination/features/auth/domain/usecases/edit_profile_usecase.dart';
 
 final userRepositoryProvider = Provider<IUserRepository>((ref) {
   final userLocalDatasource = ref.read(userLocalDatasourceProvider);
@@ -139,6 +142,58 @@ class UserRepository implements IUserRepository {
       } catch (e) {
         return Left(LocalDatabaseFailure(message: e.toString()));
       }
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> editProfile(
+    EditProfileUsecaseParams params,
+  ) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final apiModel = EditProfileApiModel(
+          fullName: params.fullName,
+          username: params.username,
+          profilePicture: params.profilePicture,
+          email: params.email,
+          phoneNumber: params.phoneNumber,
+        );
+        await _userRemoteDatasource.editProfile(apiModel);
+        return const Right(true);
+      } on DioException catch (e) {
+        return Left(
+          ApiFailure(
+            message: e.response?.data['message'] ?? "Edit Profile Failed",
+            statusCode: e.response?.statusCode,
+          ),
+        );
+      } catch (e) {
+        return Left(ApiFailure(message: e.toString()));
+      }
+    } else {
+      return Left(NetworkFailure(message: "Internet Required To Edit Profile"));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserEntity>> getProfile() async {
+    try {
+      final user = await _userRemoteDatasource.getProfile();
+      debugPrint("User chahi yesto aayo $user");
+      if (user != null) {
+        final userEntity = user.toEntity();
+        return Right(userEntity);
+      }
+      return Left(ApiFailure(message: "Couldnot get current user"));
+    } on DioException catch (e) {
+      return Left(
+        ApiFailure(
+          message: e.response?.data['message'] ?? "Couldnt get user",
+          statusCode: e.response?.statusCode,
+        ),
+      );
+    } catch (e) {
+      return Left(ApiFailure(message: e.toString()));
     }
   }
 }

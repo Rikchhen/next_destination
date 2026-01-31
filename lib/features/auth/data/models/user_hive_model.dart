@@ -18,21 +18,25 @@ class UserHiveModel extends HiveObject {
   final String email;
 
   @HiveField(3)
-  final String password;
+  final String? password;
 
   @HiveField(4)
-  final String confirmPassword;
+  final String? confirmPassword;
 
   @HiveField(5)
   final String phoneNumber;
+
+  @HiveField(6)
+  final String? profilePicture;
 
   UserHiveModel({
     String? userId,
     required this.fullName,
     required this.email,
-    required this.password,
-    required this.confirmPassword,
+    this.password,
+    this.confirmPassword,
     required this.phoneNumber,
+    this.profilePicture,
   }) : userId = userId ?? Uuid().v4();
 
   UserEntity toEntity() {
@@ -43,6 +47,7 @@ class UserHiveModel extends HiveObject {
       password: password,
       confirmPassword: confirmPassword,
       phoneNumber: phoneNumber,
+      profilePicture: profilePicture,
     );
   }
 
@@ -53,6 +58,7 @@ class UserHiveModel extends HiveObject {
       email: entity.email,
       password: entity.password,
       confirmPassword: entity.confirmPassword,
+      profilePicture: entity.profilePicture,
     );
   }
 

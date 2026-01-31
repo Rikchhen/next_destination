@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:next_destination/core/error/failures.dart';
 import 'package:next_destination/features/auth/domain/entities/user_entity.dart';
+import 'package:next_destination/features/auth/domain/usecases/edit_profile_usecase.dart';
 
 abstract interface class IUserRepository {
   Future<Either<Failure, bool>> registerUser(UserEntity entity);
@@ -8,6 +9,9 @@ abstract interface class IUserRepository {
     String phoneNumber,
     String password,
   );
-  Future<Either<Failure, UserEntity>> getCurrentUser();
   Future<Either<Failure, bool>> logout();
+
+  // Profile
+  Future<Either<Failure, UserEntity>> getProfile();
+  Future<Either<Failure, bool>> editProfile(EditProfileUsecaseParams params);
 }

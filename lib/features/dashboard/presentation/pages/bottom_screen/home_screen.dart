@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:next_destination/core/utils/colors.dart';
-import 'package:next_destination/core/widgets/home_header.dart';
-import 'package:next_destination/core/widgets/search_bar_custom.dart';
-import 'package:next_destination/core/widgets/flight_card.dart';
-import 'package:next_destination/core/widgets/bus_card.dart';
+import 'package:next_destination/features/auth/presentation/widgets/home_header.dart';
+import 'package:next_destination/features/auth/presentation/widgets/search_bar_custom.dart';
+import 'package:next_destination/features/auth/presentation/widgets/flight_card.dart';
+import 'package:next_destination/features/auth/presentation/widgets/bus_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const HomeHeader(userName: "Hari Bahadur"),
+                  const HomeHeader(),
                   const SizedBox(height: 20),
                   const SearchBarCustom(),
                   const SizedBox(height: 30),

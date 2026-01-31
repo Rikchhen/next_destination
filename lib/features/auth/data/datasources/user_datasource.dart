@@ -1,3 +1,4 @@
+import 'package:next_destination/features/auth/data/models/edit_profile_api_model.dart';
 import 'package:next_destination/features/auth/data/models/user_api_model.dart';
 import 'package:next_destination/features/auth/data/models/user_hive_model.dart';
 
@@ -15,7 +16,8 @@ abstract interface class IUserLocalDatasource {
 
 abstract interface class IUserRemoteDatasource {
   Future<UserApiModel> registerUser(UserApiModel model);
-  Future<UserApiModel?> getCurrentUser();
+  Future<UserApiModel?> getProfile();
+  Future<EditProfileApiModel> editProfile(EditProfileApiModel model);
   Future<UserApiModel?> loginUser(String phoneNumber, String password);
   Future<bool> logout();
 }

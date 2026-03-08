@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:next_destination/features/auth/domain/usecases/edit_profile_usecase.dart';
 import 'package:next_destination/features/auth/domain/usecases/get_profile_usecase.dart';
 import 'package:next_destination/features/auth/domain/usecases/login_usecase.dart';
+import 'package:next_destination/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:next_destination/features/auth/domain/usecases/register_usecase.dart';
 import 'package:next_destination/features/auth/presentation/state/user_state.dart';
 
@@ -15,6 +16,7 @@ class UserViewModel extends Notifier<UserState> {
   late final LoginUsecase _loginUsecase;
   late final EditProfileUsecase _editProfileUsecase;
   late final GetProfileUsecase _getProfileUsecase;
+  late final LogoutUsecase _logoutUsecase;
 
   @override
   build() {
@@ -22,6 +24,7 @@ class UserViewModel extends Notifier<UserState> {
     _loginUsecase = ref.read(loginUsecaseProvider);
     _getProfileUsecase = ref.read(getProfileUsecaseProvider);
     _editProfileUsecase = ref.read(editProfileUsecaseProvider);
+    _logoutUsecase = ref.read(logoutUsecaseProvider);
     return UserState();
   }
 
@@ -60,15 +63,9 @@ class UserViewModel extends Notifier<UserState> {
   }
 
   // Login Method
-  Future<void> login({
-    required String phoneNumber,
-    required String password,
-  }) async {
+  Future<void> login({required String email, required String password}) async {
     state = state.copyWith(status: UserStatus.loading);
-    final loginParams = LoginUsecaseParams(
-      phoneNumber: phoneNumber,
-      password: password,
-    );
+    final loginParams = LoginUsecaseParams(email: email, password: password);
     final result = await _loginUsecase(loginParams);
 
     result.fold(
@@ -83,6 +80,37 @@ class UserViewModel extends Notifier<UserState> {
           status: UserStatus.authenticated,
           userEntity: userEntity,
         );
+      },
+    );
+  }
+
+  Future<void> logout({bool preserveToken = false}) async {
+    state = state.copyWith(status: UserStatus.loading);
+
+    final result = await _logoutUsecase(
+      LogoutParams(preserveToken: preserveToken),
+    );
+
+    result.fold(
+      (failure) {
+        state = state.copyWith(
+          status: UserStatus.error,
+          errorMessage: failure.message,
+        );
+      },
+      (ok) {
+        if (ok) {
+          state = state.copyWith(
+            status: UserStatus.loggedOut,
+            userEntity: null,
+            errorMessage: null,
+          );
+        } else {
+          state = state.copyWith(
+            status: UserStatus.error,
+            errorMessage: "Logout failed",
+          );
+        }
       },
     );
   }

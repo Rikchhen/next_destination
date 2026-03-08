@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:next_destination/app/routes/app_routes.dart';
+import 'package:next_destination/core/utils/colors.dart';
 import 'package:next_destination/core/utils/snackbar_utils.dart';
+import 'package:next_destination/core/widgets/custom_password_field.dart';
+import 'package:next_destination/core/widgets/custom_text_field.dart';
 import 'package:next_destination/features/auth/presentation/pages/register_screen.dart';
 import 'package:next_destination/features/auth/presentation/state/user_state.dart';
 import 'package:next_destination/features/auth/presentation/viewmodels/user_view_model.dart';
-import 'package:next_destination/core/utils/colors.dart';
-import 'package:next_destination/core/widgets/custom_text_field.dart';
-import 'package:next_destination/core/widgets/custom_password_field.dart';
-import 'package:next_destination/features/dashboard/presentation/pages/bottom_screen/home_screen.dart';
+import 'package:next_destination/features/business/presentation/pages/business_login_screen.dart';
+import 'package:next_destination/features/dashboard/presentation/pages/bottom_screen_layout.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -18,8 +19,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final TextEditingController _phoneController = TextEditingController();
-
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -29,7 +29,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       await ref
           .read(userViewModelProvider.notifier)
           .login(
-            phoneNumber: _phoneController.text,
+            email: _emailController.text,
             password: _passwordController.text,
           );
     }
@@ -37,7 +37,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   void dispose() {
-    _phoneController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -46,10 +46,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     ref.listen<UserState>(userViewModelProvider, (previous, next) {
       if (next.status == UserStatus.authenticated) {
-        AppRoutes.pushReplacement(context, HomeScreen());
-        SnackbarUtils.showSuccess(context, "Login SuccessFull");
+        AppRoutes.pushReplacement(context, const BottomScreenLayout());
+        SnackbarUtils.showSuccess(context, 'Login SuccessFull');
       } else if (next.status == UserStatus.error && next.errorMessage != null) {
-        SnackbarUtils.showError(context, next.errorMessage ?? "Login Failed");
+        SnackbarUtils.showError(context, next.errorMessage ?? 'Login Failed');
       }
     });
 
@@ -80,33 +80,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 style: TextStyle(fontSize: 16.0, color: secondaryText),
               ),
               const SizedBox(height: 40.0),
-
               const Text(
-                'Enter your Phone Number',
+                'Enter your Email',
                 style: TextStyle(fontSize: 14, color: secondaryText),
               ),
               const SizedBox(height: 8.0),
-              // Replaced with Custom Widget
               CustomTextField(
-                hint: '9*********9',
-                controller: _phoneController,
+                hint: 'example@example.com',
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
               ),
-
               const SizedBox(height: 20.0),
-
               const Text(
                 'Password',
                 style: TextStyle(fontSize: 14, color: secondaryText),
               ),
               const SizedBox(height: 8.0),
-              // Replaced with Custom Widget
               CustomPasswordField(
-                hint: '••••••••••',
+                hint: '**********',
                 controller: _passwordController,
               ),
-
               const SizedBox(height: 10.0),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -132,9 +126,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 20.0),
-
               SizedBox(
                 height: 60.0,
                 child: ElevatedButton(
@@ -156,27 +148,36 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 30.0),
-
               const Center(
                 child: Text(
                   'New To The App?',
                   style: TextStyle(color: Colors.grey),
                 ),
               ),
-
               TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterScreen(),
-                    ),
-                  );
+                  AppRoutes.pushReplacement(context, const RegisterScreen());
                 },
                 child: Text(
                   'Create an account',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w600,
+                    color: primaryRed,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 6),
+              TextButton(
+                onPressed: () {
+                  AppRoutes.pushReplacement(
+                    context,
+                    const BusinessLoginScreen(),
+                  );
+                },
+                child: Text(
+                  'Login as Business',
                   style: TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w600,

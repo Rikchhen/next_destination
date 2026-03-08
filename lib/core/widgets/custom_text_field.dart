@@ -15,10 +15,18 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15.0),
-        border: Border.all(color: Colors.grey.shade300, width: 2),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
       child: TextField(
         controller: controller,
@@ -26,14 +34,15 @@ class CustomTextField extends StatelessWidget {
         keyboardType: keyboardType,
         decoration: InputDecoration(
           hintText: hint,
+          hintStyle: theme.textTheme.bodyMedium,
           contentPadding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 15,
+            horizontal: 16,
+            vertical: 14,
           ),
-          border: InputBorder.none,
           isDense: true,
         ),
       ),
     );
   }
 }
+

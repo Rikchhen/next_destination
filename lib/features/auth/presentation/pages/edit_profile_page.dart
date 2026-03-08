@@ -103,10 +103,11 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   }
 
   String? _avatarToUrl(String? raw) {
-    if (raw == null || raw.isEmpty) return null;
-    if (raw.startsWith('http')) return raw;
-
-    return '${ApiEndpoints.profileImages}/$raw';
+    if (raw == null || raw.trim().isEmpty) return null;
+    return ApiEndpoints.resolveUploadUrl(
+      raw,
+      defaultFolder: 'profile-pictures',
+    );
   }
 
   // ---------------- UI ----------------

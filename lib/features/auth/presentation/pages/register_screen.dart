@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:next_destination/app/routes/app_routes.dart';
 import 'package:next_destination/core/utils/snackbar_utils.dart';
 import 'package:next_destination/features/auth/presentation/pages/login_screen.dart';
 import 'package:next_destination/core/utils/colors.dart';
@@ -197,12 +198,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
-                      ),
-                    );
+                    AppRoutes.pushReplacement(context, const LoginScreen());
                   },
                   child: Text(
                     'Sign in here',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:next_destination/app/routes/app_routes.dart';
 import 'package:next_destination/features/auth/presentation/pages/login_screen.dart';
 import 'package:next_destination/core/utils/colors.dart';
 import 'package:next_destination/core/widgets/shared_widgets.dart';
@@ -72,10 +73,7 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
   }
 
   void _navigateToLogin() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
-    );
+    AppRoutes.pushReplacement(context, const LoginScreen());
   }
 
   void _onGetStartedPressed() {

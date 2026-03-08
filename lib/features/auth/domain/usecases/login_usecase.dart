@@ -8,12 +8,12 @@ import 'package:next_destination/features/auth/domain/entities/user_entity.dart'
 import 'package:next_destination/features/auth/domain/repositories/user_repositroy.dart';
 
 class LoginUsecaseParams extends Equatable {
-  final String phoneNumber;
+  final String email;
   final String password;
-  const LoginUsecaseParams({required this.phoneNumber, required this.password});
+  const LoginUsecaseParams({required this.email, required this.password});
 
   @override
-  List<Object?> get props => [phoneNumber, password];
+  List<Object?> get props => [email, password];
 }
 
 // Provder For Login Usecase
@@ -29,6 +29,6 @@ class LoginUsecase
 
   @override
   Future<Either<Failure, UserEntity>> call(LoginUsecaseParams params) {
-    return _userRepositroy.loginUser(params.phoneNumber, params.password);
+    return _userRepositroy.loginUser(params.email, params.password);
   }
 }

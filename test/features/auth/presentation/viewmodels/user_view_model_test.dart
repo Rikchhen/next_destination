@@ -46,7 +46,7 @@ class UserAuthScreen extends ConsumerWidget {
             onPressed: () {
               ref
                   .read(userViewModelProvider.notifier)
-                  .login(phoneNumber: '9800000000', password: '123456');
+                  .login(email: '9800000000', password: '123456');
             },
             child: const Text('Login'),
           ),

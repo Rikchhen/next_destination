@@ -28,36 +28,6 @@ class UserApiModel {
 
   Map<String, dynamic> toJson() => _$UserApiModelToJson(this);
 
-  // To JSON: Using Json Serializable
-
-  // From Json: Using Json Serializable
-
-  // // Using dynamic because user le j pani value pathauna paayo
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     "fullName": fullName,
-  //     "phoneNumber": phoneNumber,
-  //     "email": email,
-  //     "password": password,
-  //     "confirmPassword": confirmPassword,
-  //   };
-  // }
-
-  // // From JSON
-
-  // factory UserApiModel.fromJson(Map<String, dynamic> json) {
-  //   final userJson =
-  //       json['user'] ??
-  //       json; // null safety measure. the code kept throwing it because some feilds were being returned null
-  //   return UserApiModel(
-  //     id: userJson['_id'] as String?,
-  //     fullName: userJson['fullName'] as String? ?? '',
-  //     email: userJson['email'] as String? ?? '',
-  //     password: userJson['password'] as String? ?? '',
-  //     confirmPassword: userJson['confirmPassword'] as String? ?? '',
-  //     phoneNumber: userJson['phoneNumber'] as String? ?? '',
-  //   );
-
   // To Entity
   UserEntity toEntity() {
     return UserEntity(

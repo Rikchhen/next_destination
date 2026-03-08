@@ -5,11 +5,8 @@ import 'package:next_destination/features/auth/domain/usecases/edit_profile_usec
 
 abstract interface class IUserRepository {
   Future<Either<Failure, bool>> registerUser(UserEntity entity);
-  Future<Either<Failure, UserEntity>> loginUser(
-    String phoneNumber,
-    String password,
-  );
-  Future<Either<Failure, bool>> logout();
+  Future<Either<Failure, UserEntity>> loginUser(String email, String password);
+  Future<Either<Failure, bool>> logout({bool preserveToken = false});
 
   // Profile
   Future<Either<Failure, UserEntity>> getProfile();

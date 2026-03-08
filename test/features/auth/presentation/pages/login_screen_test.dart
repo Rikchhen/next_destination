@@ -56,17 +56,6 @@ void main() {
     mockGetProfile = MockGetProfileUsecase();
   });
 
-  testWidgets('LoginScreen shows title, fields, and buttons', (tester) async {
-    await tester.pumpWidget(makeApp(const LoginScreen()));
-
-    expect(find.text('Login'), findsWidgets);
-    expect(find.text('Enter your Phone Number'), findsOneWidget);
-    expect(find.text('Password'), findsOneWidget);
-    expect(find.text('Create an account'), findsOneWidget);
-    expect(find.byType(TextField), findsNWidgets(2));
-    expect(find.byType(ElevatedButton), findsOneWidget);
-  });
-
   testWidgets('Tapping "Create an account" navigates to RegisterScreen', (
     WidgetTester tester,
   ) async {

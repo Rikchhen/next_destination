@@ -32,10 +32,10 @@ class UserRemoteDatasource implements IUserRemoteDatasource {
        _tokenService = tokenService;
 
   @override
-  Future<UserApiModel?> loginUser(String phoneNumber, String password) async {
+  Future<UserApiModel?> loginUser(String email, String password) async {
     final response = await _apiClient.post(
       ApiEndpoints.userLogin,
-      data: {'phoneNumber': phoneNumber, 'password': password},
+      data: {'email': email, 'password': password},
     );
     if (response.data['success'] == true) {
       final data = response.data['user'] as Map<String, dynamic>;
@@ -47,6 +47,7 @@ class UserRemoteDatasource implements IUserRemoteDatasource {
         phoneNumber: user.phoneNumber,
         email: user.email,
         fullName: user.fullName,
+        role: 'user',
       );
       // Save Token
       final token = response.data['token'] as String?;

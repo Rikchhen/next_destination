@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:next_destination/core/utils/colors.dart';
-import 'package:next_destination/features/dashboard/presentation/pages/bottom_screen/explore_screen.dart';
+import 'package:next_destination/features/auth/presentation/pages/profile_page.dart';
+import 'package:next_destination/features/booking/presentation/pages/my_bookings_screen.dart';
 import 'package:next_destination/features/dashboard/presentation/pages/bottom_screen/home_screen.dart';
-import 'package:next_destination/features/dashboard/presentation/pages/bottom_screen/setting_screen.dart';
-import 'package:next_destination/features/dashboard/presentation/pages/bottom_screen/wallet_screen.dart';
+import 'package:next_destination/features/trip/presentation/pages/trip_search_screen.dart';
 
 class BottomScreenLayout extends StatefulWidget {
   const BottomScreenLayout({super.key});
@@ -17,48 +17,89 @@ class _BottomScreenLayoutState extends State<BottomScreenLayout> {
 
   final List<Widget> _bottomScreens = const [
     HomeScreen(),
-    ExploreScreen(),
-    WalletScreen(),
-    SettingScreen(),
+    TripSearchScreen(),
+    MyBookingsScreen(),
+    ProfilePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       body: _bottomScreens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        // Set the bar background to your primary red
-        backgroundColor: primaryRed,
-        // Set selected icon/label to white
-        selectedItemColor: Colors.white,
-        // Set unselected to a faded white for contrast
-        unselectedItemColor: Colors.white70,
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home, size: 30),
-            label: "Home",
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.fromLTRB(14, 6, 14, 12),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(28),
+            gradient: const LinearGradient(
+              colors: [primaryRedDark, primaryRed],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: primaryRed.withOpacity(0.28),
+                blurRadius: 22,
+                offset: const Offset(0, 10),
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore, size: 30),
-            label: "Explore",
+          child: NavigationBarTheme(
+            data: NavigationBarThemeData(
+              height: 74,
+              backgroundColor: Colors.transparent,
+              indicatorColor: Colors.white.withOpacity(0.2),
+              iconTheme: WidgetStateProperty.resolveWith((states) {
+                final isSelected = states.contains(WidgetState.selected);
+                return IconThemeData(
+                  color: isSelected ? Colors.white : Colors.white70,
+                  size: isSelected ? 28 : 24,
+                );
+              }),
+              labelTextStyle: WidgetStateProperty.resolveWith((states) {
+                final isSelected = states.contains(WidgetState.selected);
+                return theme.textTheme.bodyMedium!.copyWith(
+                  fontFamily: 'OpenSans SemiBold',
+                  color: isSelected ? Colors.white : Colors.white70,
+                );
+              }),
+            ),
+            child: NavigationBar(
+              selectedIndex: _selectedIndex,
+              onDestinationSelected: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+              destinations: const [
+                NavigationDestination(
+                  icon: Icon(Icons.home_rounded),
+                  selectedIcon: Icon(Icons.home_rounded),
+                  label: 'Home',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.explore_rounded),
+                  selectedIcon: Icon(Icons.explore_rounded),
+                  label: 'Trips',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.receipt_long_rounded),
+                  selectedIcon: Icon(Icons.receipt_long_rounded),
+                  label: 'Bookings',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.person_rounded),
+                  selectedIcon: Icon(Icons.person_rounded),
+                  label: 'Profile',
+                ),
+              ],
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.wallet, size: 30),
-            label: "Wallet",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings, size: 30),
-            label: "Settings",
-          ),
-        ],
+        ),
       ),
     );
   }
 }
+
